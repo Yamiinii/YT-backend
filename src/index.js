@@ -1,6 +1,4 @@
 import dotenv from 'dotenv';
-import mongoose from "mongoose"
-import {DB_NAME} from "./constants.js"
 import connectDB from './db/index.js';
 
 // dotenv.config({
@@ -10,10 +8,22 @@ import connectDB from './db/index.js';
 dotenv.config()
 //CONNECTING DB  BY CONNECTING DB USING ANOTHER FILE
 
+//it is an async function so it will return a promise
 connectDB()
+.then(()=>{
+    app.listen(process.env.PORT || 8000,()=>{
+        console.log(`Server is running at Port: ${process.env.PORT}`)
+    })
+})
+.catch((error)=>{
+    console.error("MongoDB connection failed !!!",error)
+})
 
-
-
+// Catch server-level errors like port in use, etc.
+app.on("error",(error)=>{
+    console.error("🚨 App-level error:", error);
+    throw error;
+})
 
 
 
